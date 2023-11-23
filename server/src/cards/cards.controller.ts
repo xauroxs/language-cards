@@ -15,14 +15,15 @@ import { Card } from './card.entity';
 import { IdDto } from './dto/id.dto';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
+import { FilterCardsDto } from './dto/filter-cards.dto';
 
 @Controller('cards')
 export class CardsController {
   constructor(private cardsService: CardsService) {}
 
   @Get()
-  getCards(): Promise<Card[]> {
-    return this.cardsService.getCards();
+  getCards(@Body() dto: FilterCardsDto): Promise<Card[]> {
+    return this.cardsService.getCards(dto);
   }
 
   @Get(':id')

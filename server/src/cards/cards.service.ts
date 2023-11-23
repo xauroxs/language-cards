@@ -6,6 +6,7 @@ import { Card } from './card.entity';
 
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
+import { FilterCardsDto } from './dto/filter-cards.dto';
 
 @Injectable()
 export class CardsService {
@@ -14,8 +15,14 @@ export class CardsService {
     private cardRepository: Repository<Card>,
   ) {}
 
-  async getCards(): Promise<Card[]> {
-    const cards = await this.cardRepository.find();
+  async getCards(dto: FilterCardsDto): Promise<Card[]> {
+    const { category } = dto;
+
+    let cards = await this.cardRepository.find();
+
+    if (category) {
+      cards = cards.filter((card) => card.categories.includes(category));
+    }
 
     return cards;
   }
