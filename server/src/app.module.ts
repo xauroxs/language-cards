@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { configValidationSchema } from './config.schema';
 
 import { LanguagesModule } from './languages/languages.module';
+import { CardsModule } from './cards/cards.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { LanguagesModule } from './languages/languages.module';
       },
     }),
     LanguagesModule,
+    CardsModule,
   ],
   controllers: [],
   providers: [],
