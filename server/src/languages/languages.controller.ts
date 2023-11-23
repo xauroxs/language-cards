@@ -12,6 +12,7 @@ import { LanguagesService } from './languages.service';
 
 import { Language } from './language.entity';
 
+import { IdDto } from './dto/id.dto';
 import { CreateLanguageDto } from './dto/create-language.dto';
 
 @Controller('languages')
@@ -24,7 +25,9 @@ export class LanguagesController {
   }
 
   @Get(':id')
-  getLanguageById(@Param('id') id: string): Promise<Language> {
+  getLanguageById(@Param() idDto: IdDto): Promise<Language> {
+    const { id } = idDto;
+
     return this.languagesService.getLanguageById(id);
   }
 
@@ -34,15 +37,19 @@ export class LanguagesController {
   }
 
   @Delete(':id')
-  deleteLanguage(@Param('id') id: string): Promise<void> {
+  deleteLanguage(@Param() idDto: IdDto): Promise<void> {
+    const { id } = idDto;
+
     return this.languagesService.deleteLanguage(id);
   }
 
   @Patch(':id/name')
   updateLanguageName(
-    @Param('id') id: string,
+    @Param() idDto: IdDto,
     @Body('name') name: string,
   ): Promise<Language> {
+    const { id } = idDto;
+
     return this.languagesService.updateLanguageName(id, name);
   }
 }
