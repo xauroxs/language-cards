@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Language } from 'src/languages/language.entity';
 
 @Entity()
 export class Card {
@@ -16,4 +18,7 @@ export class Card {
 
   @Column('text', { array: true, nullable: true })
   notes: string[];
+
+  @ManyToOne(() => Language, (language) => language.cards, { eager: false })
+  language: Language;
 }
