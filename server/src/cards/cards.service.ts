@@ -2,6 +2,8 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { LanguagesService } from 'src/languages/languages.service';
+
 import { Card } from './card.entity';
 
 import { CreateCardDto } from './dto/create-card.dto';
@@ -13,6 +15,8 @@ export class CardsService {
   constructor(
     @InjectRepository(Card)
     private cardRepository: Repository<Card>,
+
+    private languagesService: LanguagesService,
   ) {}
 
   async getCards(dto: FilterCardsDto): Promise<Card[]> {
@@ -38,13 +42,16 @@ export class CardsService {
   }
 
   async createCard(dto: CreateCardDto): Promise<Card> {
-    const { word, translation, categories, notes } = dto;
+    const { word, translation, categories, notes, languageId } = dto;
+
+    const language = await this.languagesService.getLanguageById(languageId);
 
     const card = this.cardRepository.create({
       word,
       translation,
       categories,
       notes,
+      language,
     });
 
     await this.cardRepository.save(card);

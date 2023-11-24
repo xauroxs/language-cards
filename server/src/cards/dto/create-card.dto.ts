@@ -1,4 +1,10 @@
-import { ArrayMinSize, IsArray, IsNotEmpty, IsString } from 'class-validator';
+import {
+  ArrayMinSize,
+  IsArray,
+  IsNotEmpty,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateCardDto {
   @IsString()
@@ -19,4 +25,9 @@ export class CreateCardDto {
   @IsString({ each: true })
   @IsNotEmpty()
   notes: string[];
+
+  @IsString()
+  @IsNotEmpty()
+  @IsUUID('4')
+  languageId: string;
 }
