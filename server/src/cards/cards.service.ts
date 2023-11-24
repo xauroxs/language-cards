@@ -20,9 +20,17 @@ export class CardsService {
   ) {}
 
   async getCards(dto: FilterCardsDto): Promise<Card[]> {
-    const { category } = dto;
+    const { category, languageId } = dto;
 
-    let cards = await this.cardRepository.find();
+    const language = await this.languagesService.getLanguageById(languageId);
+
+    let cards = await this.cardRepository.find({
+      where: {
+        language: {
+          id: language.id,
+        },
+      },
+    });
 
     if (category) {
       cards = cards.filter((card) => card.categories.includes(category));
