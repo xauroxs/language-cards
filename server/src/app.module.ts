@@ -6,6 +6,7 @@ import { configValidationSchema } from './config.schema';
 
 import { LanguagesModule } from './languages/languages.module';
 import { CardsModule } from './cards/cards.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CardsModule } from './cards/cards.module';
     }),
     LanguagesModule,
     CardsModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [],
