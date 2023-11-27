@@ -19,6 +19,9 @@ export class Card {
   @Column('text', { array: true, nullable: true })
   notes: string[];
 
-  @ManyToOne(() => Language, (language) => language.cards, { eager: false })
+  @ManyToOne(() => Language, (language) => language.cards, {
+    eager: false,
+    onDelete: 'CASCADE',
+  })
   language: Language;
 }

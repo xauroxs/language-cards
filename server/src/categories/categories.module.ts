@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { LanguagesModule } from 'src/languages/languages.module';
@@ -9,12 +9,8 @@ import { CategoriesService } from './categories.service';
 import { CategoriesController } from './categories.controller';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Category]),
-    forwardRef(() => LanguagesModule),
-  ],
+  imports: [TypeOrmModule.forFeature([Category]), LanguagesModule],
   providers: [CategoriesService],
   controllers: [CategoriesController],
-  exports: [CategoriesService],
 })
 export class CategoriesModule {}

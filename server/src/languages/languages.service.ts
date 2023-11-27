@@ -1,16 +1,8 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-  forwardRef,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Language } from './language.entity';
-
-import { CardsService } from 'src/cards/cards.service';
-import { CategoriesService } from 'src/categories/categories.service';
 
 import { CreateLanguageDto } from './dto/create-language.dto';
 
@@ -19,12 +11,6 @@ export class LanguagesService {
   constructor(
     @InjectRepository(Language)
     private languageRepository: Repository<Language>,
-
-    @Inject(forwardRef(() => CardsService))
-    private cardsService: CardsService,
-
-    @Inject(forwardRef(() => CategoriesService))
-    private categoriesService: CategoriesService,
   ) {}
 
   async getLanguages(): Promise<Language[]> {
@@ -54,9 +40,6 @@ export class LanguagesService {
   }
 
   async deleteLanguage(id: string): Promise<void> {
-    await this.cardsService.deleteCardsByLanguage(id);
-    await this.categoriesService.deleteCategoriesByLanguage(id);
-
     const result = await this.languageRepository.delete({ id });
 
     if (result.affected === 0) {

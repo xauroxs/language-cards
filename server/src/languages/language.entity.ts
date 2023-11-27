@@ -11,9 +11,15 @@ export class Language {
   @Column()
   name: string;
 
-  @OneToMany(() => Card, (card) => card.language, { eager: false })
+  @OneToMany(() => Card, (card) => card.language, {
+    eager: false,
+    cascade: true,
+  })
   cards: Card[];
 
-  @OneToMany(() => Category, (category) => category.language, { eager: false })
+  @OneToMany(() => Category, (category) => category.language, {
+    eager: false,
+    cascade: true,
+  })
   categories: Category[];
 }

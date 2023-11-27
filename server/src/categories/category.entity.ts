@@ -15,6 +15,7 @@ export class Category {
 
   @ManyToOne(() => Language, (language) => language.categories, {
     eager: false,
+    onDelete: 'CASCADE',
   })
   language: Language;
 }
