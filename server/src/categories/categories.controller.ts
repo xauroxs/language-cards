@@ -16,6 +16,7 @@ import { IdDto } from './dto/id.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { FilterCategoriesDto } from './dto/filter-categories.dto';
+import { DeleteCategoriesByLanguageDto } from './dto/delete-categories-by-language.dto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -43,6 +44,15 @@ export class CategoriesController {
     const { id } = idDto;
 
     return this.categoriesService.deleteCategory(id);
+  }
+
+  @Delete()
+  deleteCategoriesByLanguage(
+    @Body() languageIdDto: DeleteCategoriesByLanguageDto,
+  ): Promise<void> {
+    const { languageId } = languageIdDto;
+
+    return this.categoriesService.deleteCategoriesByLanguage(languageId);
   }
 
   @Put(':id')

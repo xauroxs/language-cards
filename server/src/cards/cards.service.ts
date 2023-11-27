@@ -1,6 +1,11 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 
 import { LanguagesService } from 'src/languages/languages.service';
 
@@ -16,6 +21,7 @@ export class CardsService {
     @InjectRepository(Card)
     private cardRepository: Repository<Card>,
 
+    @Inject(forwardRef(() => LanguagesService))
     private languagesService: LanguagesService,
   ) {}
 
@@ -73,6 +79,20 @@ export class CardsService {
     if (result.affected === 0) {
       throw new NotFoundException(`Card with ID ${id} not found.`);
     }
+  }
+
+  async deleteCardsByLanguage(languageId: string): Promise<void> {
+    const language = await this.languagesService.getLanguageById(languageId);
+
+    const languageCards = await this.cardRepository.findBy({
+      language: {
+        id: language.id,
+      },
+    });
+
+    languageCards.forEach(async (languageCard) => {
+      await this.deleteCard(languageCard.id);
+    });
   }
 
   async updateCard(id: string, dto: UpdateCardDto): Promise<Card> {

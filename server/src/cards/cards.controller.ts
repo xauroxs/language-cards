@@ -16,6 +16,7 @@ import { IdDto } from './dto/id.dto';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { FilterCardsDto } from './dto/filter-cards.dto';
+import { DeleteCardsByLanguageDto } from './dto/delete-cards-by-language.dto';
 
 @Controller('cards')
 export class CardsController {
@@ -43,6 +44,15 @@ export class CardsController {
     const { id } = idDto;
 
     return this.cardsService.deleteCard(id);
+  }
+
+  @Delete()
+  deleteCardsByLanguage(
+    @Body() languageIdDto: DeleteCardsByLanguageDto,
+  ): Promise<void> {
+    const { languageId } = languageIdDto;
+
+    return this.cardsService.deleteCardsByLanguage(languageId);
   }
 
   @Put(':id')

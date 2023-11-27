@@ -1,6 +1,11 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 
 import { LanguagesService } from 'src/languages/languages.service';
 
@@ -16,6 +21,7 @@ export class CategoriesService {
     @InjectRepository(Category)
     private categoriesRepository: Repository<Category>,
 
+    @Inject(forwardRef(() => LanguagesService))
     private languagesService: LanguagesService,
   ) {}
 
@@ -67,6 +73,20 @@ export class CategoriesService {
     if (result.affected === 0) {
       throw new NotFoundException(`Category with ID ${id} not found`);
     }
+  }
+
+  async deleteCategoriesByLanguage(languageId: string): Promise<void> {
+    const language = await this.languagesService.getLanguageById(languageId);
+
+    const languageCategories = await this.categoriesRepository.findBy({
+      language: {
+        id: language.id,
+      },
+    });
+
+    languageCategories.forEach(async (languageCategory) => {
+      await this.deleteCategory(languageCategory.id);
+    });
   }
 
   async updateCategory(id: string, dto: UpdateCategoryDto): Promise<Category> {
