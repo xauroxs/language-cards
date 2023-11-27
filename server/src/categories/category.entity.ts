@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Language } from 'src/languages/language.entity';
 
 @Entity()
 export class Category {
@@ -10,4 +12,9 @@ export class Category {
 
   @Column()
   color: string;
+
+  @ManyToOne(() => Language, (language) => language.categories, {
+    eager: false,
+  })
+  language: Language;
 }

@@ -15,14 +15,15 @@ import { CategoriesService } from './categories.service';
 import { IdDto } from './dto/id.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { FilterCategoriesDto } from './dto/filter-categories.dto';
 
 @Controller('categories')
 export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
   @Get()
-  getCategories(): Promise<Category[]> {
-    return this.categoriesService.getCategories();
+  getCategories(@Body() dto: FilterCategoriesDto): Promise<Category[]> {
+    return this.categoriesService.getCategories(dto);
   }
 
   @Get(':id')

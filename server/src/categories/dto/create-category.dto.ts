@@ -1,4 +1,4 @@
-import { IsHexColor, IsNotEmpty, IsString } from 'class-validator';
+import { IsHexColor, IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateCategoryDto {
   @IsString()
@@ -9,4 +9,9 @@ export class CreateCategoryDto {
   @IsNotEmpty()
   @IsHexColor()
   color: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsUUID('4')
+  languageId: string;
 }

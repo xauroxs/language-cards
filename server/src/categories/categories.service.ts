@@ -2,20 +2,35 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { LanguagesService } from 'src/languages/languages.service';
+
 import { Category } from './category.entity';
 
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { FilterCategoriesDto } from './dto/filter-categories.dto';
 
 @Injectable()
 export class CategoriesService {
   constructor(
     @InjectRepository(Category)
     private categoriesRepository: Repository<Category>,
+
+    private languagesService: LanguagesService,
   ) {}
 
-  async getCategories(): Promise<Category[]> {
-    const categories = await this.categoriesRepository.find();
+  async getCategories(dto: FilterCategoriesDto): Promise<Category[]> {
+    const { languageId } = dto;
+
+    const language = await this.languagesService.getLanguageById(languageId);
+
+    const categories = await this.categoriesRepository.find({
+      where: {
+        language: {
+          id: language.id,
+        },
+      },
+    });
 
     return categories;
   }
@@ -31,11 +46,14 @@ export class CategoriesService {
   }
 
   async createCategory(dto: CreateCategoryDto): Promise<Category> {
-    const { name, color } = dto;
+    const { name, color, languageId } = dto;
+
+    const language = await this.languagesService.getLanguageById(languageId);
 
     const category = this.categoriesRepository.create({
       name,
       color,
+      language,
     });
 
     await this.categoriesRepository.save(category);
