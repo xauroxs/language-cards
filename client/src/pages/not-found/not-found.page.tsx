@@ -8,10 +8,7 @@ const NotFoundPage = () => {
   return (
     <div className="flex h-screen flex-col items-center justify-center">
       <div className="h-72 w-72">
-        <img
-          src={Lost}
-          alt="lost person"
-        />
+        <img src={Lost} alt="lost person" />
       </div>
       <h2 className="mb-2 text-4xl font-bold">Not Found</h2>
       <p className="mb-2 text-lg">Where am I?</p>

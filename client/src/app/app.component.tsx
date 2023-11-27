@@ -6,20 +6,9 @@ const App = () => {
   return (
     <Routes>
       <Route path="/">
-        <Route
-          path="not-found"
-          element={<NotFoundPage />}
-        />
+        <Route path="not-found" element={<NotFoundPage />} />
 
-        <Route
-          path="*"
-          element={
-            <Navigate
-              to="/not-found"
-              replace
-            />
-          }
-        />
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Route>
     </Routes>
   );
